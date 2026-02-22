@@ -9,6 +9,7 @@ const ChessApp = (() => {
     let currentPuzzleIndex = 0;
     let puzzleMoveIndex = 0;
     let puzzleState = null;
+    let puzzleAttempts = 0;
     let botThinking = false;
 
     function init() {
@@ -256,6 +257,7 @@ const ChessApp = (() => {
 
         currentPuzzleIndex = index;
         puzzleMoveIndex = 0;
+        puzzleAttempts = 0;
         const puzzle = puzzles[index];
 
         puzzleState = ChessEngine.stateFromFEN(puzzle.fen);
@@ -291,8 +293,15 @@ const ChessApp = (() => {
 
         if (!isCorrect) {
             // Wrong move — shake feedback
+            puzzleAttempts++;
             const feedback = document.getElementById('puzzle-feedback');
-            feedback.textContent = '❌ Movimiento incorrecto. ¡Inténtalo de nuevo!';
+
+            let msg = '❌ Movimiento incorrecto. ¡Inténtalo de nuevo!';
+            if (puzzleAttempts >= 3) {
+                msg = `💡 Solución: ${puzzle.solution.join(', ')}`;
+            }
+
+            feedback.textContent = msg;
             feedback.className = 'puzzle-feedback wrong';
             ChessBoard.clearSelection();
             ChessBoard.render(puzzleState);
@@ -300,6 +309,7 @@ const ChessApp = (() => {
         }
 
         // Correct move
+        puzzleAttempts = 0;
         const newState = ChessEngine.makeMove(puzzleState, move);
         if (!newState) return;
 

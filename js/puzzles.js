@@ -26,16 +26,14 @@ const ChessPuzzles = (() => {
             id: 3,
             title: 'Mate en 2 — Sacrificio',
             description: 'Blancas juegan y dan mate en 2 movimientos.',
-            fen: 'r2qkb1r/pp2nppp/3p4/2pNN1B1/2BnP3/3P4/PPP2PPP/R2bK2R w KQkq - 0 1',
-            solution: ['Nf6', 'Qd8'],
+            fen: 'r2qkb1r/pp2nppp/3p4/2pNN1B1/2BnP3/3P4/PPP2PPP/R3K2R w KQkq - 0 1',
+            solution: ['Nf6+', 'Bxf7#'],
             solutionMoves: [
-                { from: { row: 3, col: 4 }, to: { row: 1, col: 5 } },
-                // After black responds (engine plays), White mates
-                { from: { row: 7, col: 3 }, to: { row: 0, col: 3 } }
+                { from: { row: 3, col: 4 }, to: { row: 2, col: 5 } },
+                { from: { row: 4, col: 2 }, to: { row: 1, col: 5 } }
             ],
             playerColor: 'w',
-            // Bot plays black's response between moves
-            botResponses: [null] // bot auto-responds after move 1
+            botResponses: [null]
         },
         {
             id: 4,
