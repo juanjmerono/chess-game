@@ -24,7 +24,75 @@ const ChessApp = (() => {
         document.getElementById('btn-next-puzzle').addEventListener('click', () => navigatePuzzle(1));
         document.getElementById('btn-retry-puzzle').addEventListener('click', () => loadPuzzle(currentPuzzleIndex));
 
+        // Theme switcher logic
+        initThemeSwitcher();
+
         showMainMenu();
+    }
+
+    function initThemeSwitcher() {
+        const toggleBtn = document.getElementById('theme-toggle');
+        const themeMenu = document.getElementById('theme-menu');
+        const themeOptions = document.querySelectorAll('.theme-option');
+
+        // Initial load
+        const savedTheme = localStorage.getItem('chess-theme') || 'midnight';
+        applyTheme(savedTheme);
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeMenu.classList.toggle('active');
+        });
+
+        themeOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                const theme = opt.dataset.theme;
+                applyTheme(theme);
+                themeMenu.classList.remove('active');
+            });
+        });
+
+        // Close menu on click outside
+        document.addEventListener('click', () => {
+            themeMenu.classList.remove('active');
+        });
+    }
+
+    function applyTheme(theme) {
+        // Remove existing theme classes
+        document.documentElement.classList.remove('theme-midnight', 'theme-forest', 'theme-frost', 'theme-sepia');
+
+        // Add new theme class
+        document.documentElement.classList.add(`theme-${theme}`);
+        localStorage.setItem('chess-theme', theme);
+
+        // Determine if light or dark theme
+        const isLight = theme === 'frost' || theme === 'sepia';
+        ChessBoard.setTheme(isLight ? 'light' : 'dark');
+
+        // Update active state in UI
+        document.querySelectorAll('.theme-option').forEach(opt => {
+            opt.classList.toggle('active', opt.dataset.theme === theme);
+        });
+
+        // Update color selector button icons to match theme
+        updateSelectorIcons();
+    }
+
+    function updateSelectorIcons() {
+        const symbols = ChessBoard.getSymbols();
+        const whiteBtn = document.getElementById('btn-play-white');
+        const blackBtn = document.getElementById('btn-play-black');
+
+        if (whiteBtn) {
+            // Update only the text content part that contains the piece
+            const span = whiteBtn.querySelector('span');
+            whiteBtn.innerHTML = `${symbols.wK}<span>${span.textContent}</span>`;
+        }
+        if (blackBtn) {
+            const span = blackBtn.querySelector('span');
+            blackBtn.innerHTML = `${symbols.bK}<span>${span.textContent}</span>`;
+        }
     }
 
     // ───────── Navigation ─────────

@@ -3,10 +3,17 @@
  */
 const ChessBoard = (() => {
 
-    const UNICODE_PIECES = {
+    const PIECES_DARK = {
         wK: '♚', wQ: '♛', wR: '♜', wB: '♝', wN: '♞', wP: '♟',
         bK: '♔', bQ: '♕', bR: '♖', bB: '♗', bN: '♘', bP: '♙'
     };
+
+    const PIECES_LIGHT = {
+        wK: '♔', wQ: '♕', wR: '♖', wB: '♗', wN: '♘', wP: '♙',
+        bK: '♚', bQ: '♛', bR: '♜', bB: '♝', bN: '♞', bP: '♟'
+    };
+
+    let UNICODE_PIECES = PIECES_DARK;
 
     let boardEl = null;
     let flipped = false;
@@ -16,6 +23,7 @@ const ChessBoard = (() => {
     let onMoveCallback = null;
     let interactive = true;
     let promotionCallback = null;
+    let lastState = null; // Store state for re-rendering on theme change
 
     function init(containerSelector, opts = {}) {
         boardEl = document.querySelector(containerSelector);
@@ -26,6 +34,7 @@ const ChessBoard = (() => {
 
     function render(state) {
         if (!boardEl) return;
+        lastState = state;
         boardEl.innerHTML = '';
         boardEl.classList.toggle('flipped', flipped);
 
@@ -238,8 +247,17 @@ const ChessBoard = (() => {
         el.scrollTop = el.scrollHeight;
     }
 
+    function setTheme(mode) {
+        UNICODE_PIECES = mode === 'light' ? PIECES_LIGHT : PIECES_DARK;
+        if (lastState) render(lastState);
+    }
+
+    function getSymbols() {
+        return UNICODE_PIECES;
+    }
+
     return {
-        init, render, setFlipped, setInteractive, clearSelection,
+        init, render, setTheme, getSymbols, setFlipped, setInteractive, clearSelection,
         setLastMove, renderCaptured, renderMoveHistory
     };
 })();
