@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Juego de ajedrez con modo partida contra IA y modo práctica con puzzles tácticos.">
+  <title>♚ Singularity Chess</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Header -->
+    <header class="app-header">
+      <h1 class="app-title">♚ Singularity Chess</h1>
+      <p class="app-subtitle">Partidas contra IA · Puzzles tácticos</p>
+    </header>
+
+    <!-- ═══════ MAIN MENU ═══════ -->
+    <div id="main-menu">
+      <div class="menu-buttons">
+        <button class="menu-btn" id="btn-game-mode">
+          <span class="icon">⚔️</span>
+          <span class="label">Partida</span>
+          <span class="desc">Juega contra el bot con blancas o negras</span>
+        </button>
+        <button class="menu-btn" id="btn-practice-mode">
+          <span class="icon">🧩</span>
+          <span class="label">Práctica</span>
+          <span class="desc">Resuelve puzzles tácticos</span>
+        </button>
+      </div>
+
+      <!-- Color Selection (shown inside menu) -->
+      <div id="color-select" class="hidden">
+        <p class="color-title">Elige tu color</p>
+        <div class="color-buttons">
+          <button class="color-btn" id="btn-play-white">
+            ♔
+            <span>Blancas</span>
+          </button>
+          <button class="color-btn" id="btn-play-black">
+            ♚
+            <span>Negras</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ GAME SCREEN ═══════ -->
+    <div id="game-screen" class="hidden">
+      <div class="game-layout">
+        <div class="board-container">
+          <div id="game-board" class="board"></div>
+        </div>
+        <div class="sidebar">
+          <div class="sidebar-title">Estado</div>
+          <div id="game-status">Tu turno</div>
+
+          <div class="sidebar-title">Capturas</div>
+          <div id="game-captured"></div>
+
+          <div class="sidebar-title">Movimientos</div>
+          <div id="game-moves" class="move-list"></div>
+
+          <div class="sidebar-actions">
+            <button class="btn primary" id="btn-new-game">Nueva partida</button>
+            <button class="btn" id="btn-back-menu">Volver al menú</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Result Overlay -->
+      <div id="game-result-overlay" class="result-overlay hidden">
+        <div class="result-card">
+          <div id="game-result-text" class="result-text"></div>
+          <button class="btn primary" id="btn-result-new-game"
+                  onclick="document.getElementById('game-result-overlay').classList.add('hidden');document.getElementById('btn-new-game').click();">
+            Nueva partida
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ PRACTICE SCREEN ═══════ -->
+    <div id="practice-screen" class="hidden">
+      <div class="practice-layout">
+        <div class="board-container">
+          <div id="practice-board" class="board"></div>
+        </div>
+        <div class="puzzle-info">
+          <h2 id="puzzle-title">Puzzle 1</h2>
+          <p id="puzzle-description" class="puzzle-description"></p>
+          <div id="puzzle-counter" class="puzzle-counter"></div>
+          <div id="puzzle-feedback" class="puzzle-feedback"></div>
+
+          <div class="puzzle-nav">
+            <button class="btn" id="btn-prev-puzzle">← Anterior</button>
+            <button class="btn" id="btn-next-puzzle">Siguiente →</button>
+          </div>
+          <button class="btn" id="btn-retry-puzzle">🔄 Reintentar</button>
+          <button class="btn" id="btn-back-menu-practice">Volver al menú</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts (order matters: engine first, then bot, board, puzzles, app) -->
+  <script src="js/engine.js"></script>
+  <script src="js/bot.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/puzzles.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
